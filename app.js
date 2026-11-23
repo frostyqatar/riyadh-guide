@@ -214,8 +214,13 @@
       (state.kind ? " · showing only <b>" + esc(state.kind) + "</b>" : "");
 
     $("tbody").innerHTML = list.map(function (r, i) {
-      var link = r.url
-        ? '<a href="' + esc(r.url) + '" target="_blank" rel="noopener">' + esc(r.name) + "</a>"
+      // clicking a name opens Google Maps with that name in the search box
+      var mapsHref = r.name
+        ? "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(r.name)
+        : r.url;
+      var link = mapsHref
+        ? '<a href="' + esc(mapsHref) + '" target="_blank" rel="noopener" ' +
+          'title="Open in Google Maps">' + esc(r.name) + "</a>"
         : esc(r.name);
       var br = r.branches ? '<span class="br">+' + (r.branches - 1) + "</span>" : "";
       var cells = '<td class="rank">' + (i + 1) + "</td>" +
