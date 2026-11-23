@@ -119,7 +119,7 @@
     var kinds = {};
     base.forEach(function (r) { if (r.kind) kinds[r.kind] = (kinds[r.kind] || 0) + 1; });
     var knames = Object.keys(kinds).sort(function (a, b) { return kinds[b] - kinds[a]; });
-    if (knnames.length < 2) return;
+    if (knames.length < 2) return;
 
     var all = document.createElement("button");
     all.className = "chip";
@@ -129,7 +129,7 @@
     all.onclick = function () { state.kind = null; render(); };
     chips.appendChild(all);
 
-    knnames.slice(0, 12).forEach(function (k) {
+    knames.slice(0, 12).forEach(function (k) {
       var c = document.createElement("button");
       c.className = "chip";
       c.type = "button";
