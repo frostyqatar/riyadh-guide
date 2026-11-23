@@ -237,8 +237,10 @@
 
     $("empty").hidden = list.length > 0;
 
+    // footer (with the CSV link) may not exist
     var ds = (D.datasets || []).filter(function (d) { return d.key === state.ds; })[0];
-    $("dl").href = "csv/" + (ds ? ds.key : "eat") + ".csv";
+    var dl = $("dl");
+    if (dl && ds) dl.href = "csv/" + ds.key + ".csv";
   }
 
   render();

@@ -254,24 +254,7 @@ td.station .lines {
 
 .empty { padding: 60px 0; text-align: center; color: var(--muted); }
 
-/* ---------------------------------------------------------------- footer */
-footer {
-  border-top: 1px solid var(--line);
-  padding: 26px 0 70px;
-  font-size: 12.5px;
-  color: var(--muted);
-  line-height: 1.7;
-}
-footer b { color: var(--ink); font-weight: 600; }
-footer code {
-  font-family: var(--mono);
-  font-size: 11.5px;
-  background: var(--accent-soft);
-  color: var(--accent);
-  padding: 1.5px 5px;
-  border-radius: 4px;
-}
-
+/* ---------------------------------------------------------------- misc */
 @media (max-width: 720px) {
   header.top { padding-top: 34px; }
   thead th { top: 105px; }
