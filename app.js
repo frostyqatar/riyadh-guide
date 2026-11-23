@@ -118,24 +118,29 @@
   }
 
   function renderHead(isMetro) {
-    var cols = isMetro
-      ? [["#", "rank", ""], ["Place", "name", ""], ["", "rate", "r"], ["Reviews", "num", "r"],
-         ["Station", "station", ""], ["Walk", "num", "r"], ["Kind", "kind", ""]]
-      : [["#", "rank", ""], ["Place", "name", ""], ["", "rate", "r"], ["Reviews", "num", "r"],
-         ["Kind", "kind", ""], ["Area", "area", ""]];
-    $("thead").innerHTML = "<tr>" + cols.map(function (c) {
+    // [label, class, align, sortKey|null]
+    var head = [["#", "rank", "", null], ["Place", "name", "", null],
+                ["★", "rate", "r", "rating"], ["Reviews", "num", "r", "reviews"]];
+    head = head.concat(isMetro
+      ? [["Station", "station", "", null], ["Walk", "num", "r", null],
+         ["Kind", "kind", "", null]]
+      : [["Kind", "kind", "", null], ["Area", "area", "", null]]);
+
+    $("thead").innerHTML = "<tr>" + head.map(function (c) {
       var cls = c[1] + (c[2] ? " " + c[2] : "");
-      var arrow = (c[1] === "rate" || c[1] === "num")
-        ? ' data-sort="' + (c[1] === "rate" ? "rating" : "reviews") + '"' : "";
-      if (arrow && state.sort === (c[1] === "rate" ? "rating" : "reviews")) {
-        arrow += state.dir === "asc" ? ' data-sort="asc"' : "";
+      var attrs = "";
+      if (c[3]) {
+        attrs = ' data-sort="' + c[3] + '"';
+        if (state.sort === c[3]) {
+          attrs += state.dir === "asc" ? ' data-dir="asc"' : ' data-dir="desc"';
+        }
       }
-      return '<th class="' + cls + '"' + arrow + ">" + esc(c[0]) + "</th>";
+      return '<th class="' + cls + '"' + attrs + ">" + esc(c[0]) + "</th>";
     }).join("") + "</tr>";
 
     $("thead").querySelectorAll("th[data-sort]").forEach(function (th) {
       th.onclick = function () {
-        var key = th.dataset.sort === "asc" ? "rating" : th.dataset.sort;
+        var key = th.dataset.sort;
         if (state.sort === key) {
           state.dir = state.dir === "desc" ? "asc" : "desc";
         } else {
@@ -189,7 +194,8 @@
           '<td class="kind">' + esc(r.kind) + "</td>";
       } else {
         cells += '<td class="kind">' + esc(r.kind) + "</td>" +
-          '<td class="area" title="' + esc(r.area) + '">' + esc(r.area) + "</td>";
+          '<td class="area" title="' + esc(r.area) + '">' +
+          esc((r.area || "").slice(0, 34)) + "</td>";
       }
       return "<tr>" + cells + "</tr>";
     }).join("");

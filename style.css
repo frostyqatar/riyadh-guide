@@ -210,6 +210,7 @@ thead th[data-sort]::after {
   color: var(--accent);
 }
 thead th[data-sort="asc"]::after { content: "↑"; }
+thead th[data-dir="asc"]::after { content: "↑"; }
 thead th.r, td.r { text-align: right; }
 thead th.c, td.c { text-align: center; }
 
