@@ -8,6 +8,7 @@
     q: "",
     min: 0,
     kind: null,
+    line: null,
     sort: "reviews",
     dir: "desc",
   };
@@ -35,6 +36,7 @@
     b.onclick = function () {
       state.ds = d.key;
       state.kind = null;
+      state.line = null;
       render();
     };
     tabs.appendChild(b);
@@ -81,11 +83,43 @@
 
   function renderChips(base) {
     var chips = $("chips");
+    chips.innerHTML = "";
+
+    // the metro tab filters by line, not by kind
+    if (state.ds === "metro") {
+      var lines = {};
+      base.forEach(function (r) {
+        (r.lines || "").split("+").forEach(function (l) {
+          if (l) lines[l] = (lines[l] || 0) + 1;
+        });
+      });
+      var order = ["Blue", "Red", "Orange", "Yellow", "Green", "Purple"];
+      var names = Object.keys(lines).sort(function (a, b) {
+        return order.indexOf(a) - order.indexOf(b);
+      });
+      var all0 = document.createElement("button");
+      all0.className = "chip";
+      all0.type = "button";
+      all0.textContent = "All lines";
+      all0.setAttribute("aria-pressed", String(state.line === null));
+      all0.onclick = function () { state.line = null; render(); };
+      chips.appendChild(all0);
+      names.forEach(function (k) {
+        var c = document.createElement("button");
+        c.className = "chip";
+        c.type = "button";
+        c.textContent = k + " " + lines[k];
+        c.setAttribute("aria-pressed", String(state.line === k));
+        c.onclick = function () { state.line = state.line === k ? null : k; render(); };
+        chips.appendChild(c);
+      });
+      return;
+    }
+
     var kinds = {};
     base.forEach(function (r) { if (r.kind) kinds[r.kind] = (kinds[r.kind] || 0) + 1; });
-    var names = Object.keys(kinds).sort(function (a, b) { return kinds[b] - kinds[a]; });
-    chips.innerHTML = "";
-    if (names.length < 2) return;
+    var knames = Object.keys(kinds).sort(function (a, b) { return kinds[b] - kinds[a]; });
+    if (knnames.length < 2) return;
 
     var all = document.createElement("button");
     all.className = "chip";
@@ -95,7 +129,7 @@
     all.onclick = function () { state.kind = null; render(); };
     chips.appendChild(all);
 
-    names.slice(0, 12).forEach(function (k) {
+    knnames.slice(0, 12).forEach(function (k) {
       var c = document.createElement("button");
       c.className = "chip";
       c.type = "button";
@@ -111,6 +145,7 @@
     return base.filter(function (r) {
       if (r.rating < state.min) return false;
       if (state.kind && r.kind !== state.kind) return false;
+      if (state.line && (r.lines || "").split("+").indexOf(state.line) < 0) return false;
       if (!q) return true;
       return (r.name + " " + r.kind + " " + r.area + " " + (r.station || "") + " " +
               (r.lines || "") + " " + r.q).toLowerCase().indexOf(q) > -1;
