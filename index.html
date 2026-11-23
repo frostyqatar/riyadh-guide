@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Riyadh — a scraped directory</title>
+<meta name="description" content="Hand-scraped Riyadh directory: best restaurants and cafes, dessert shops, things to do, places to shop, and what's walkable from a metro stop.">
+<link rel="stylesheet" href="style.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='26' font-size='26'>◈</text></svg>">
+</head>
+<body>
+
+<div class="wrap">
+  <header class="top">
+    <p class="eyebrow">Riyadh · <span id="gen"></span></p>
+    <h1>Where to <em>go</em>,<br>what to eat.</h1>
+    <p class="lede">
+      A directory scraped straight out of Google Maps — no API key, no vendor.
+      <b id="total">0</b> places across <b id="ncat">0</b> lists, each with the rating
+      and review count it had on the day it was pulled.
+    </p>
+  </header>
+
+  <nav class="tabs" id="tabs" role="tablist"></nav>
+</div>
+
+<div class="toolbar">
+  <div class="wrap">
+    <div class="row">
+      <input type="search" id="q" placeholder="Search name, area, kind…  (press /)" autocomplete="off" spellcheck="false">
+      <div class="seg" id="ratings" role="group" aria-label="Minimum rating">
+        <button data-min="0" aria-pressed="true">All</button>
+        <button data-min="4.5" aria-pressed="false">4.5+</button>
+        <button data-min="4.7" aria-pressed="false">4.7+</button>
+        <button data-min="4.9" aria-pressed="false">4.9</button>
+      </div>
+      <div class="seg" id="sorts" role="group" aria-label="Sort">
+        <button data-sort="reviews" aria-pressed="true">Most reviewed</button>
+        <button data-sort="rating" aria-pressed="false">Top rated</button>
+      </div>
+    </div>
+    <div class="chips" id="chips"></div>
+    <p class="meta-line" id="meta"></p>
+  </div>
+</div>
+
+<div class="wrap">
+  <table>
+    <thead id="thead"></thead>
+    <tbody id="tbody"></tbody>
+  </table>
+  <div class="empty" id="empty" hidden>Nothing matches that.</div>
+
+  <footer>
+    <p>
+      Pulled from <b>google.com/maps</b> by a hex-grid crawler reading the same JSON the
+      page loads. Raw CSVs: <a id="dl" href="#">download the current list</a>.
+    </p>
+    <p>
+      Coverage is honest but not exhaustive: Google returns ~40 places per query, so a
+      dense area can hide a small venue. Popular-by-review ranking means the well-known
+      places are the ones guaranteed to be here.
+    </p>
+    <p>
+      Filters — <code>Eat &amp; drink</code> 4.8★ and 1,001+ reviews ·
+      <code>Dessert</code> 4.7★ and 200+ ·
+      <code>Things to do</code> 4.5★ and 300+ ·
+      <code>Shopping</code> 4.2★ and 50+ ·
+      <code>Near metro</code> within 900 m of an OSM-mapped station.
+    </p>
+  </footer>
+</div>
+
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
